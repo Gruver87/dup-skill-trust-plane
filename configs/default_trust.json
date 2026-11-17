@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "product": "dup-skill-trust-plane",
+  "policy": "fail-closed",
+  "require_gates": ["static", "security", "allowlist", "sandbox_profile"],
+  "fail_if_gate_missing": true,
+  "default_source": "Gruver87/dup-agent-skills",
+  "verdicts": {
+    "clean": "all required gates pass",
+    "suspicious": "warnings only (no errors) — not installable by default",
+    "refused": "one or more hard gate failures",
+    "malicious": "security ERROR findings (secrets/download-exec/etc.)"
+  },
+  "sandbox_defaults": {
+    "network": false,
+    "fs_write": false,
+    "shell": "deny",
+    "credentials": "deny"
+  },
+  "note": "Not a marketplace. Control plane for teams installing Agent Skills."
+}

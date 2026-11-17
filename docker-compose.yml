@@ -1,0 +1,16 @@
+# Self-host trust plane API (local). Mount sibling packs read-only as needed.
+services:
+  trust-plane:
+    build: .
+    ports:
+      - "8788:8788"
+    environment:
+      TRUST_BIND: "0.0.0.0"
+      TRUST_PORT: "8788"
+      # TRUST_HMAC_SECRET: set via env file — never commit
+    volumes:
+      - ./cards:/app/cards
+      - ./configs:/app/configs:ro
+      # Optional: mount Desktop packs for /v1/verify pack_root paths
+      - ../dup-agent-skills:/packs/dup-agent-skills:ro
+    restart: unless-stopped

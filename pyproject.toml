@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dup-skill-trust-plane"
+version = "0.1.0"
+description = "Fail-closed Agent Skills trust plane: eval + security + sandbox profile + Skill Cards"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Uladzimir Dabranski" }]
+keywords = ["agent-skills", "trust", "security", "skill-card", "dup-labs", "fail-closed"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.8"]
+gates = [
+  "dup-skills-eval",
+  "dup-skill-security-scan",
+  "dup-policy-gate",
+]
+
+[project.scripts]
+dup-skill-trust = "skill_trust.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Gruver87/dup-skill-trust-plane"
+Repository = "https://github.com/Gruver87/dup-skill-trust-plane"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
