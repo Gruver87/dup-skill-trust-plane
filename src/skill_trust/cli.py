@@ -26,6 +26,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("status", help="Show tool version and gate import status")
 
+    demo = sub.add_parser(
+        "demo",
+        help="Verify packaged fixture pack (no Desktop paths; gates optional)",
+    )
+    demo.add_argument("--out", type=Path, default=Path("cards/demo"))
+    demo.add_argument(
+        "--require-gates",
+        action="store_true",
+        help="Fail if sibling gates are not installed (default: best-effort)",
+    )
+
     v = sub.add_parser("verify", help="Run full trust pipeline on a skills pack")
     v.add_argument("pack_root", type=Path)
     v.add_argument("--source", default="Gruver87/dup-agent-skills")
@@ -95,6 +106,40 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         return 0
+
+    if args.cmd == "demo":
+        pack = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "good_pack"
+        print(f"skill_trust DEMO pack={pack}")
+        gates = _import_status()
+        missing = [k for k, v in gates.items() if not v.get("available", True)]
+        if missing:
+            print(f"gates missing (optional for demo): {missing}")
+        if args.require_gates and missing:
+            print(f"FAIL: --require-gates and missing {missing}", file=sys.stderr)
+            return 2
+        if not gates.get("static", {}).get("available", False):
+            print(
+                "DEMO PARTIAL — install dup-skills-eval (+ security-scan, policy-gate) "
+                "for full plane; status-only OK",
+            )
+            print(json.dumps({"tool_version": __version__, "gates": gates}, indent=2))
+            return 0
+        require_policy = gates.get("policy", {}).get("available", False)
+        # Fixture skill name `no-futures-auto` is on the published allowlist.
+        skip_al = not gates.get("security", {}).get("available", False)
+        report = verify_pack(
+            pack,
+            source="Gruver87/dup-agent-skills",
+            skip_allowlist=skip_al,
+            require_policy=require_policy,
+        )
+        _print_summary(report)
+        paths = write_cards(report, args.out)
+        print(f"cards → {args.out} ({len(paths)} files)")
+        if missing:
+            print("DEMO PARTIAL (sibling gates missing) — cards written anyway")
+            return 0
+        return 0 if report.ok else 1
 
     if args.cmd == "serve":
         serve(host=args.host, port=args.port)

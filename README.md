@@ -6,6 +6,10 @@
 **Org:** [DUP Labs](https://github.com/Gruver87) · **Author:** Uladzimir Dabranski  
 **Version:** `0.1.0` · Fail-closed **Agent Skills control plane** (not a marketplace)
 
+Universal trust plane for Agent Skills / MCP installs: compose static eval, security
+allowlist, sandbox profile, and policy probes into Skill Cards. Domain-agnostic —
+fintech, medicine-adjacent tooling, DevOps agents — crypto radar is the first stand.
+
 Orchestrates the industrial gate chain companies need after skill-supply-chain attacks:
 
 1. **Static / honesty** — [`dup-skills-eval`](https://github.com/Gruver87/dup-skills-eval)  
@@ -16,22 +20,33 @@ Orchestrates the industrial gate chain companies need after skill-supply-chain a
 
 Self-host via Docker. No KuCoin keys. No soak.
 
+## Quick demo (fixtures)
+
+```bash
+git clone https://github.com/Gruver87/dup-skill-trust-plane.git && cd dup-skill-trust-plane
+python -m pip install -e ".[dev]"
+# optional full plane:
+# pip install -e ../dup-skills-eval -e ../dup-skill-security-scan -e ../dup-policy-gate
+make demo
+# or: python -m skill_trust demo
+# Windows: .\scripts\demo.ps1
+```
+
 ## Install (with sibling gates)
 
-```powershell
-cd C:\Users\vovun\Desktop\dup-skill-trust-plane
+```bash
 python -m pip install -e ".[dev]"
-python -m pip install -e ..\dup-skills-eval -e ..\dup-skill-security-scan -e ..\dup-policy-gate
-.\scripts\test_all.ps1
-.\scripts\verify_agent_skills.ps1
+python -m pip install -e ../dup-skills-eval -e ../dup-skill-security-scan -e ../dup-policy-gate
+make test   # or: .\scripts\test_all.ps1
 ```
 
 ## CLI
 
-```powershell
+```bash
 python -m skill_trust status
-python -m skill_trust verify ..\dup-agent-skills --out .\cards
-python -m skill_trust check-install ..\dup-agent-skills
+python -m skill_trust demo
+python -m skill_trust verify ../dup-agent-skills --out ./cards
+python -m skill_trust check-install ../dup-agent-skills
 python -m skill_trust serve --host 127.0.0.1 --port 8788
 ```
 
@@ -39,16 +54,16 @@ python -m skill_trust serve --host 127.0.0.1 --port 8788
 
 ## HTTP (self-host)
 
-```powershell
-# Terminal A — start API
+```bash
+# Terminal A
 python -m skill_trust serve --host 127.0.0.1 --port 8788
 
-# Terminal B — verify a pack (Windows PowerShell)
-$body = @{ pack_root = "C:\Users\vovun\Desktop\dup-agent-skills" } | ConvertTo-Json
-Invoke-RestMethod -Uri "http://127.0.0.1:8788/v1/verify" -Method Post -Body $body -ContentType "application/json"
-# Expect: ok=True, verdict=clean, skill_count=10 (with sha256 per skill)
+# Terminal B
+curl -s -X POST http://127.0.0.1:8788/v1/verify \
+  -H "Content-Type: application/json" \
+  -d '{"pack_root":"/path/to/dup-agent-skills"}'
 
-# Docker alternative
+# Docker
 docker compose up --build
 # POST http://127.0.0.1:8788/v1/verify
 # {"pack_root":"/packs/dup-agent-skills","write_cards":true}
