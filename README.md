@@ -1,6 +1,7 @@
 # DUP Skill Trust Plane
 
 [![ci](https://github.com/Gruver87/dup-skill-trust-plane/actions/workflows/ci.yml/badge.svg)](https://github.com/Gruver87/dup-skill-trust-plane/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/Gruver87/dup-skill-trust-plane?display_name=tag)](https://github.com/Gruver87/dup-skill-trust-plane/releases)
 
 **Org:** [DUP Labs](https://github.com/Gruver87) · **Author:** Uladzimir Dabranski  
 **Version:** `0.1.0` · Fail-closed **Agent Skills control plane** (not a marketplace)
@@ -39,9 +40,21 @@ python -m skill_trust serve --host 127.0.0.1 --port 8788
 ## HTTP (self-host)
 
 ```powershell
+# Terminal A — start API
+python -m skill_trust serve --host 127.0.0.1 --port 8788
+
+# Terminal B — verify a pack (Windows PowerShell)
+$body = @{ pack_root = "C:\Users\vovun\Desktop\dup-agent-skills" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://127.0.0.1:8788/v1/verify" -Method Post -Body $body -ContentType "application/json"
+# Expect: ok=True, verdict=clean, skill_count=10 (with sha256 per skill)
+
+# Docker alternative
 docker compose up --build
-# POST /v1/verify  {"pack_root":"/packs/dup-agent-skills","write_cards":true}
+# POST http://127.0.0.1:8788/v1/verify
+# {"pack_root":"/packs/dup-agent-skills","write_cards":true}
 ```
+
+`GET /v1/health` — liveness. `POST /v1/verify` — full trust pipeline (fail-closed).
 
 ## Ecosystem
 
