@@ -7,6 +7,8 @@
 **Org:** [DUP Labs](https://github.com/Gruver87) · **Author:** Uladzimir Dabranski  
 **Version:** `0.1.0` · Fail-closed **Agent Skills control plane** (not a marketplace)
 
+M8ven listing: [publisher-verified MCP card](https://m8ven.ai/mcp/gruver87/dup-skill-trust-plane) (automated public-repo index + publisher claim — **not** a paid audit, **not** a soak/PASS claim).
+
 Universal trust plane for Agent Skills / MCP installs: compose static eval, security
 allowlist, sandbox profile, and policy probes into Skill Cards. Domain-agnostic —
 fintech, medicine-adjacent tooling, DevOps agents — crypto radar is the first stand.
