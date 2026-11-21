@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/Gruver87/dup-skill-trust-plane/actions/workflows/ci.yml/badge.svg)](https://github.com/Gruver87/dup-skill-trust-plane/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Gruver87/dup-skill-trust-plane?display_name=tag)](https://github.com/Gruver87/dup-skill-trust-plane/releases)
-[![M8ven Score](https://m8ven.ai/badge/mcp/gruver87/dup-skill-trust-plane)](https://m8ven.ai/mcp/gruver87/dup-skill-trust-plane?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/gruver87-dup-skill-trust-plane-1qot1l?v=ed9052e1905cee7d2f1b6090903a4eb1)](https://m8ven.ai/mcp/gruver87-dup-skill-trust-plane-1qot1l?s=readme)
 
 **Org:** [DUP Labs](https://github.com/Gruver87) · **Author:** Uladzimir Dabranski  
 **Version:** `0.1.0` · Fail-closed **Agent Skills control plane** (not a marketplace)
