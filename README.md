@@ -9,6 +9,8 @@
 
 M8ven listing: [publisher-verified MCP card](https://m8ven.ai/mcp/gruver87/dup-skill-trust-plane) (automated public-repo index + publisher claim — **not** a paid audit, **not** a soak/PASS claim).
 
+**Beginner?** → [`docs/START_HERE.md`](docs/START_HERE.md) (5-minute demo, no keys).
+
 Universal trust plane for Agent Skills / MCP installs: compose static eval, security
 allowlist, sandbox profile, and policy probes into Skill Cards. Domain-agnostic —
 fintech, medicine-adjacent tooling, DevOps agents — crypto radar is the first stand.
